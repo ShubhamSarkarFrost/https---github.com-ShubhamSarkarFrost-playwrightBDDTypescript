@@ -16,6 +16,9 @@ export default class OrangeHrmPage {
     orangeHrmLogo: "//img[@alt='client brand banner']",
     adminSideBarOption: "//span[text()='Admin']",
     addUserButton: "//button[normalize-space()='Add']",
+    userRoleDropdown: "//div[@class='oxd-select-text oxd-select-text--active']",
+    employeeNameTextbox: "//input[@placeholder='Type for hints...']",
+    commonInputBox: "//input[@class='oxd-input oxd-input--active']"
   };
 
   async navigateToOrangeHRMPage() {
@@ -79,4 +82,34 @@ export default class OrangeHrmPage {
       .scrollIntoViewIfNeeded();
     await this.page.locator(this.orangeHrmPageElements.addUserButton).click();
   }
+  
+  async selectUserRole(RoleSelect:string){
+    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(0).waitFor({ state: 'visible', timeout: 60000 });
+    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(0).scrollIntoViewIfNeeded();
+    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(0).click();
+    await this.page.locator(`xpath=//span[text()="${RoleSelect}"]`).hover();
+    await this.page.locator(`xpath=//span[text()="${RoleSelect}"]`).click();
+  }
+  
+  async selectStatus(RoleStatus:string){
+    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(1).waitFor({ state: 'visible', timeout: 60000 });
+    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(1).scrollIntoViewIfNeeded();
+    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(1).click();
+    await this.page.locator(`xpath=//span[text()="${RoleStatus}"]`).hover();
+    await this.page.locator(`xpath=//span[text()="${RoleStatus}"]`).click();
+  }
+
+  async selectRoleForUser(usersName:string){
+    await this.page.locator(this.orangeHrmPageElements.employeeNameTextbox).waitFor({state: 'visible', timeout: 60000 });
+    await this.page.fill(this.orangeHrmPageElements.employeeNameTextbox, usersName);
+    await this.page.locator(`text="${usersName}"`).waitFor({state: 'visible', timeout: 60000 });
+    await this.page.locator(`text="${usersName}"`).hover();
+    await this.page.locator(`text="${usersName}"`).click();
+  }
+
+  async enterUsersNameinUserManagement(usersName:string){
+    await this.page.locator(this.orangeHrmPageElements.commonInputBox)
+  }
+
+
 }

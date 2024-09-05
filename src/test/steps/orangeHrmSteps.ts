@@ -39,3 +39,17 @@ When('I click on Admin Button from Orange HRM side menu', async function () {
 When('I click on Add user button from User Management', async function () {
   await orangeHrmPage.clickAddUserButton();
 });
+
+When('I select users role as {string}', async function (userRole:string) {
+    await orangeHrmPage.selectUserRole(userRole);
+})
+
+When('I select users role status as {string}', async function (roleStatus:string) {
+    await orangeHrmPage.selectStatus(roleStatus);
+})
+
+When('I enter role for {string} in User Management', async function (UsersName:string) {
+    await orangeHrmPage.selectRoleForUser(UsersName);
+})
+
+
