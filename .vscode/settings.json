@@ -1,0 +1,10 @@
+{
+  "cucumberautocomplete.steps": ["src/test/steps/*.ts"],
+  "cucumberautocomplete.syncfeatures": "src/test/features/*.feature",
+  "cucumberautocomplete.strictGherkinCompletion": true, // Enable strict Gherkin syntax validation
+  "cucumberautocomplete.smartSnippets": true, // Enable smart snippets for step definitions
+  "cucumberautocomplete.stepsInvariants": true, // Show all steps as completion items regardless of regex
+  "editor.quickSuggestions": {
+    "strings": true // Enable auto-completion in strings (useful for Gherkin steps)
+  }
+}

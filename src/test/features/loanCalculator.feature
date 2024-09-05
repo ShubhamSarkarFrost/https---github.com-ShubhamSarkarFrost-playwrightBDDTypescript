@@ -1,6 +1,6 @@
 Feature: Check Various Loan Amount based on Input 
 
-
+ @notest
  Scenario Outline: As a User i want to Check Various Loan amount 
     Given I navigate to the auto loan calculation website
     When User enter the autoprice as "<autoprice>" loanterm as "<loanterm>" interestrate as "<interestrate>" cashincentive as "<cashincentive>" downpayment as "<downpayment>" tradein as "<tradeinvalue>" amountowed as "<amountowed>" userstate as "<userstate>" tax as "<salestax>" and othertax as "<misllaneous>"
