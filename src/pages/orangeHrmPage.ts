@@ -1,6 +1,5 @@
 import { expect, Page } from '@playwright/test';
 import PlaywrightWrapper from '../helper/wrapper/PlaywrightWrappers';
-import { fixture } from '../hooks/pageFixture';
 import config = require('../../config.json'); // Import the JSON config file
 
 export default class OrangeHrmPage {
@@ -18,11 +17,20 @@ export default class OrangeHrmPage {
     addUserButton: "//button[normalize-space()='Add']",
     userRoleDropdown: "//div[@class='oxd-select-text oxd-select-text--active']",
     employeeNameTextbox: "//input[@placeholder='Type for hints...']",
-    commonInputBox: "//input[@class='oxd-input oxd-input--active']"
+    commonInputBox: "//input[@class='oxd-input oxd-input--active']",
+    commonPasswordBox: "//div[@class='oxd-form-row user-password-row']//input[@class='oxd-input oxd-input--active']",
+    confirmPasswordBox: "//div[@class='oxd-form-row user-password-row']//input[@class='oxd-input oxd-input--focus']",
+    saveButton:"//button[normalize-space()='Save']",
+    searchButton:"//button[normalize-space()='Search']"
   };
 
   async navigateToOrangeHRMPage() {
     await this.base.goto(config.OrangeHRMUrl);
+  }
+
+  async sleepForTime(time:string){
+    const timewait = parseInt(time);
+    await this.base.sleepAndWait(timewait * 1000);
   }
 
   async enterUsername(Username: string) {
@@ -73,6 +81,18 @@ export default class OrangeHrmPage {
       .click();
   }
 
+  async verifyAddButtonVisible(){
+    await this.page
+    .locator(this.orangeHrmPageElements.addUserButton)
+    .waitFor({ state: 'visible', timeout: 60000 });
+  await this.page
+    .locator(this.orangeHrmPageElements.addUserButton)
+    .scrollIntoViewIfNeeded();
+    await expect(
+      this.page.locator(this.orangeHrmPageElements.addUserButton)
+    ).toBeVisible();
+  }
+
   async clickAddUserButton() {
     await this.page
       .locator(this.orangeHrmPageElements.addUserButton)
@@ -108,8 +128,42 @@ export default class OrangeHrmPage {
   }
 
   async enterUsersNameinUserManagement(usersName:string){
-    await this.page.locator(this.orangeHrmPageElements.commonInputBox)
+    process.env.RANDOM_USERNAME = usersName;
+    await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).waitFor({state: 'visible', timeout: 60000});
+    await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).scrollIntoViewIfNeeded();
+   await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).fill(usersName);
+  }
+  
+  async enterUsersPassword(userPass:string){
+    await this.page.locator(this.orangeHrmPageElements.commonPasswordBox).nth(0).waitFor({state: 'visible', timeout: 60000});
+    await this.page.locator(this.orangeHrmPageElements.commonPasswordBox).nth(0).scrollIntoViewIfNeeded();
+   await this.page.locator(this.orangeHrmPageElements.commonPasswordBox).nth(0).fill(userPass);
   }
 
+  async reconfirmUsersPassword(reconfirmPass:string){
+    await this.page.locator(this.orangeHrmPageElements.commonInputBox).last().waitFor({state: 'visible', timeout: 60000});
+    await this.page.locator(this.orangeHrmPageElements.commonInputBox).last().scrollIntoViewIfNeeded();
+   await this.page.locator(this.orangeHrmPageElements.commonInputBox).last().fill(reconfirmPass);
+  }
+  
+  async clickOnSaveButton(){
+    await this.page.locator(this.orangeHrmPageElements.saveButton).waitFor({state: 'visible', timeout: 60000});
+    await this.page.locator(this.orangeHrmPageElements.saveButton).scrollIntoViewIfNeeded();
+    await this.page.locator(this.orangeHrmPageElements.saveButton).click();
+  }
+
+  async searchTheCreatedUserName(){
+    const savedValue = process.env.RANDOM_USERNAME;
+    await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).waitFor({state: 'visible', timeout: 60000});
+    await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).scrollIntoViewIfNeeded();
+    await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).fill(savedValue);
+    await this.page.locator(this.orangeHrmPageElements.searchButton).waitFor({state: 'visible', timeout: 60000});
+    await this.page.locator(this.orangeHrmPageElements.searchButton).click();
+  }
+
+  async verifyUserCreated(){
+    const savedValue = process.env.RANDOM_USERNAME;
+    await expect(await this.page.locator(`//div[contains(text(),'${savedValue}')]`)).toBeVisible();
+  }
 
 }

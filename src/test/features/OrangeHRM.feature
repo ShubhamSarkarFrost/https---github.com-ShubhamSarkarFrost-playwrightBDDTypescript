@@ -17,6 +17,17 @@ Scenario: As a User i want to Assign a ESS role to the User
    Then I verify user is navigated to HRM Main Page 
    When I click on Admin Button from Orange HRM side menu
    And I click on Add user button from User Management
-   When I select users role as "ESS"
-   When I select users role status as "Enabled"
-   When I enter role for "Anil Rao" in User Management
+   And I select users role as "ESS"
+   And I select users role status as "Enabled"
+   And I enter role for "Ranga Akunuri" in User Management
+   And I enter usersname as "Aku_nuri" in Username textbox
+   And I enter the password as "Akunuri12@"
+   And I reconfirm the password as "Akunuri12@"
+   And I click on save button
+   And User waits for "30" seconds
+   Then User verifies that they are back to add users Page
+   When I search the created user using the username entered
+   And User waits for "30" seconds
+   Then I verify whether the User is Created
+
+
