@@ -8,6 +8,9 @@ This project is a test automation framework using **Playwright**, **Cucumber**, 
 
 The project follows the **Page Object Model (POM)** design pattern, where web elements are separated into reusable page classes, making the test cases easy to maintain and scale.
 
+##Report Screenshots
+![Sample_Screenshot](https://github.com/ShubhamSarkarFrost/playwrightBDDTypescript/blob/main/Screenshot%202024-09-06%20194354.png)
+
 ### Folder Structure:
 ```text
 ├── features               # Cucumber feature files (Gherkin)
@@ -24,3 +27,5 @@ The project follows the **Page Object Model (POM)** design pattern, where web el
 ├── package.json           # Project dependencies and scripts
 ├── tsconfig.json          # TypeScript configuration file
 └── README.md              # Project documentation
+
+
