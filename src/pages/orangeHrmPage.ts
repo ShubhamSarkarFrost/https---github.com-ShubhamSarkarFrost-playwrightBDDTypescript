@@ -1,6 +1,7 @@
 import { expect, Page } from '@playwright/test';
 import PlaywrightWrapper from '../helper/wrapper/PlaywrightWrappers';
 import config = require('../../config.json'); // Import the JSON config file
+import logger from '../../logger'; // Import the logger File
 
 export default class OrangeHrmPage {
   private base: PlaywrightWrapper;
@@ -18,17 +19,19 @@ export default class OrangeHrmPage {
     userRoleDropdown: "//div[@class='oxd-select-text oxd-select-text--active']",
     employeeNameTextbox: "//input[@placeholder='Type for hints...']",
     commonInputBox: "//input[@class='oxd-input oxd-input--active']",
-    commonPasswordBox: "//div[@class='oxd-form-row user-password-row']//input[@class='oxd-input oxd-input--active']",
-    confirmPasswordBox: "//div[@class='oxd-form-row user-password-row']//input[@class='oxd-input oxd-input--focus']",
-    saveButton:"//button[normalize-space()='Save']",
-    searchButton:"//button[normalize-space()='Search']"
+    commonPasswordBox:
+      "//div[@class='oxd-form-row user-password-row']//input[@class='oxd-input oxd-input--active']",
+    confirmPasswordBox:
+      "//div[@class='oxd-form-row user-password-row']//input[@class='oxd-input oxd-input--focus']",
+    saveButton: "//button[normalize-space()='Save']",
+    searchButton: "//button[normalize-space()='Search']",
   };
 
   async navigateToOrangeHRMPage() {
     await this.base.goto(config.OrangeHRMUrl);
   }
 
-  async sleepForTime(time:string){
+  async sleepForTime(time: string) {
     const timewait = parseInt(time);
     await this.base.sleepAndWait(timewait * 1000);
   }
@@ -81,13 +84,13 @@ export default class OrangeHrmPage {
       .click();
   }
 
-  async verifyAddButtonVisible(){
+  async verifyAddButtonVisible() {
     await this.page
-    .locator(this.orangeHrmPageElements.addUserButton)
-    .waitFor({ state: 'visible', timeout: 60000 });
-  await this.page
-    .locator(this.orangeHrmPageElements.addUserButton)
-    .scrollIntoViewIfNeeded();
+      .locator(this.orangeHrmPageElements.addUserButton)
+      .waitFor({ state: 'visible', timeout: 60000 });
+    await this.page
+      .locator(this.orangeHrmPageElements.addUserButton)
+      .scrollIntoViewIfNeeded();
     await expect(
       this.page.locator(this.orangeHrmPageElements.addUserButton)
     ).toBeVisible();
@@ -102,68 +105,138 @@ export default class OrangeHrmPage {
       .scrollIntoViewIfNeeded();
     await this.page.locator(this.orangeHrmPageElements.addUserButton).click();
   }
-  
-  async selectUserRole(RoleSelect:string){
-    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(0).waitFor({ state: 'visible', timeout: 60000 });
-    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(0).scrollIntoViewIfNeeded();
-    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(0).click();
+
+  async selectUserRole(RoleSelect: string) {
+    await this.page
+      .locator(this.orangeHrmPageElements.userRoleDropdown)
+      .nth(0)
+      .waitFor({ state: 'visible', timeout: 60000 });
+    await this.page
+      .locator(this.orangeHrmPageElements.userRoleDropdown)
+      .nth(0)
+      .scrollIntoViewIfNeeded();
+    await this.page
+      .locator(this.orangeHrmPageElements.userRoleDropdown)
+      .nth(0)
+      .click();
     await this.page.locator(`xpath=//span[text()="${RoleSelect}"]`).hover();
     await this.page.locator(`xpath=//span[text()="${RoleSelect}"]`).click();
   }
-  
-  async selectStatus(RoleStatus:string){
-    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(1).waitFor({ state: 'visible', timeout: 60000 });
-    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(1).scrollIntoViewIfNeeded();
-    await this.page.locator(this.orangeHrmPageElements.userRoleDropdown).nth(1).click();
+
+  async selectStatus(RoleStatus: string) {
+    await this.page
+      .locator(this.orangeHrmPageElements.userRoleDropdown)
+      .nth(1)
+      .waitFor({ state: 'visible', timeout: 60000 });
+    await this.page
+      .locator(this.orangeHrmPageElements.userRoleDropdown)
+      .nth(1)
+      .scrollIntoViewIfNeeded();
+    await this.page
+      .locator(this.orangeHrmPageElements.userRoleDropdown)
+      .nth(1)
+      .click();
     await this.page.locator(`xpath=//span[text()="${RoleStatus}"]`).hover();
     await this.page.locator(`xpath=//span[text()="${RoleStatus}"]`).click();
   }
 
-  async selectRoleForUser(usersName:string){
-    await this.page.locator(this.orangeHrmPageElements.employeeNameTextbox).waitFor({state: 'visible', timeout: 60000 });
-    await this.page.fill(this.orangeHrmPageElements.employeeNameTextbox, usersName);
-    await this.page.locator(`text="${usersName}"`).waitFor({state: 'visible', timeout: 60000 });
+  async selectRoleForUser(usersName: string) {
+    await this.page
+      .locator(this.orangeHrmPageElements.employeeNameTextbox)
+      .waitFor({ state: 'visible', timeout: 60000 });
+    await this.page.fill(
+      this.orangeHrmPageElements.employeeNameTextbox,
+      usersName
+    );
+    await this.page
+      .locator(`text="${usersName}"`)
+      .waitFor({ state: 'visible', timeout: 60000 });
     await this.page.locator(`text="${usersName}"`).hover();
     await this.page.locator(`text="${usersName}"`).click();
   }
 
-  async enterUsersNameinUserManagement(usersName:string){
+  async enterUsersNameinUserManagement(usersName: string) {
     process.env.RANDOM_USERNAME = usersName;
-    await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).waitFor({state: 'visible', timeout: 60000});
-    await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).scrollIntoViewIfNeeded();
-   await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).fill(usersName);
-  }
-  
-  async enterUsersPassword(userPass:string){
-    await this.page.locator(this.orangeHrmPageElements.commonPasswordBox).nth(0).waitFor({state: 'visible', timeout: 60000});
-    await this.page.locator(this.orangeHrmPageElements.commonPasswordBox).nth(0).scrollIntoViewIfNeeded();
-   await this.page.locator(this.orangeHrmPageElements.commonPasswordBox).nth(0).fill(userPass);
+    await this.page
+      .locator(this.orangeHrmPageElements.commonInputBox)
+      .nth(1)
+      .waitFor({ state: 'visible', timeout: 60000 });
+    await this.page
+      .locator(this.orangeHrmPageElements.commonInputBox)
+      .nth(1)
+      .scrollIntoViewIfNeeded();
+    await this.page
+      .locator(this.orangeHrmPageElements.commonInputBox)
+      .nth(1)
+      .fill(usersName);
   }
 
-  async reconfirmUsersPassword(reconfirmPass:string){
-    await this.page.locator(this.orangeHrmPageElements.commonInputBox).last().waitFor({state: 'visible', timeout: 60000});
-    await this.page.locator(this.orangeHrmPageElements.commonInputBox).last().scrollIntoViewIfNeeded();
-   await this.page.locator(this.orangeHrmPageElements.commonInputBox).last().fill(reconfirmPass);
+  async enterUsersPassword(userPass: string) {
+    await this.page
+      .locator(this.orangeHrmPageElements.commonPasswordBox)
+      .nth(0)
+      .waitFor({ state: 'visible', timeout: 60000 });
+    await this.page
+      .locator(this.orangeHrmPageElements.commonPasswordBox)
+      .nth(0)
+      .scrollIntoViewIfNeeded();
+    await this.page
+      .locator(this.orangeHrmPageElements.commonPasswordBox)
+      .nth(0)
+      .fill(userPass);
   }
-  
-  async clickOnSaveButton(){
-    await this.page.locator(this.orangeHrmPageElements.saveButton).waitFor({state: 'visible', timeout: 60000});
-    await this.page.locator(this.orangeHrmPageElements.saveButton).scrollIntoViewIfNeeded();
+
+  async reconfirmUsersPassword(reconfirmPass: string) {
+    await this.page
+      .locator(this.orangeHrmPageElements.commonInputBox)
+      .last()
+      .waitFor({ state: 'visible', timeout: 60000 });
+    await this.page
+      .locator(this.orangeHrmPageElements.commonInputBox)
+      .last()
+      .scrollIntoViewIfNeeded();
+    await this.page
+      .locator(this.orangeHrmPageElements.commonInputBox)
+      .last()
+      .fill(reconfirmPass);
+  }
+
+  async clickOnSaveButton() {
+    await this.page
+      .locator(this.orangeHrmPageElements.saveButton)
+      .waitFor({ state: 'visible', timeout: 60000 });
+    await this.page
+      .locator(this.orangeHrmPageElements.saveButton)
+      .scrollIntoViewIfNeeded();
     await this.page.locator(this.orangeHrmPageElements.saveButton).click();
   }
 
-  async searchTheCreatedUserName(){
+  async searchTheCreatedUserName() {
     const savedValue = process.env.RANDOM_USERNAME;
-    await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).waitFor({state: 'visible', timeout: 60000});
-    await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).scrollIntoViewIfNeeded();
-    await this.page.locator(this.orangeHrmPageElements.commonInputBox).nth(1).fill(savedValue);
-    await this.page.locator(this.orangeHrmPageElements.searchButton).waitFor({state: 'visible', timeout: 60000});
+    logger.info(savedValue);
+    await this.page
+      .locator(this.orangeHrmPageElements.commonInputBox)
+      .nth(1)
+      .waitFor({ state: 'visible', timeout: 60000 });
+    await this.page
+      .locator(this.orangeHrmPageElements.commonInputBox)
+      .nth(1)
+      .scrollIntoViewIfNeeded();
+    await this.page
+      .locator(this.orangeHrmPageElements.commonInputBox)
+      .nth(1)
+      .fill(savedValue);
+    await this.page
+      .locator(this.orangeHrmPageElements.searchButton)
+      .waitFor({ state: 'visible', timeout: 60000 });
     await this.page.locator(this.orangeHrmPageElements.searchButton).click();
   }
 
-  async verifyUserCreated(){
+  async verifyUserCreated() {
     const savedValue = process.env.RANDOM_USERNAME;
-    await expect(await this.page.locator(`//div[contains(text(),'${savedValue}')]`)).toBeVisible();
+    logger.info(savedValue);
+    await expect(
+      await this.page.locator(`//div[contains(text(),'${savedValue}')]`)
+    ).toBeVisible();
   }
-
 }

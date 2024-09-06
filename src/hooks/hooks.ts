@@ -83,9 +83,7 @@ AfterAll(async function () {
   await browser.close();
 });
 
-function getStorageState(
-  user: string
-):
+function getStorageState(user: string):
   | string
   | {
       cookies: {

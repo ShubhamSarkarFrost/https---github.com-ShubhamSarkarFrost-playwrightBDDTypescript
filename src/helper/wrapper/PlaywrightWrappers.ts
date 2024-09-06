@@ -25,7 +25,7 @@ export default class PlaywrightWrapper {
     await Promise.all([this.page.waitForNavigation(), this.page.click(link)]);
   }
 
-  async sleepAndWait(time:number){
+  async sleepAndWait(time: number) {
     await this.page.waitForTimeout(time);
   }
 }
